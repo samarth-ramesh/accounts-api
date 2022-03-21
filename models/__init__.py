@@ -11,8 +11,8 @@ class LoginResponse(BaseModel):
 class TransactionData(BaseModel):
     Amount: float
     Remarks: str
-    A1: str
-    A2: str
+    A1: int
+    A2: int
 
 
 class TransactionResponse(BaseModel):

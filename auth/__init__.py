@@ -1,9 +1,10 @@
 import hashlib
 import os
+import sqlite3
 import typing
 
 from fastapi import HTTPException, Depends
-from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 
 from database import get_db
 from models import LoginResponse
@@ -22,6 +23,7 @@ __tokens = {"foo"}
 
 
 def login(body: OAuth2PasswordRequestForm) -> LoginResponse:
+    print(body.username, body.password)
     try:
         conn = get_db()
         cur = conn.cursor()
@@ -69,3 +71,17 @@ def _secure_endpoint(fun, typevar: typing.Type):
             raise HTTPException(status_code=401, detail="UNAUTHORIZED")
 
     return inner
+
+
+def add_test_user():
+    try:
+        conn = get_db()
+        cur = conn.execute("INSERT INTO Auth(Name, Passwd) VALUES (?,?)", ("srini", hash_pass("foo")))
+        print(cur.rowcount)
+        conn.commit()
+    except sqlite3.Error:
+        raise RuntimeError("Unable to add to db")
+
+
+if __name__ == "__main__":
+    add_test_user()
