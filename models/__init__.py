@@ -3,13 +3,9 @@ import typing
 from pydantic import BaseModel
 
 
-class LoginData(BaseModel):
-    uname: str
-    passwd: str
-
-
 class LoginResponse(BaseModel):
-    token: str | None
+    access_token: str | None
+    token_type: str = "Bearer"
 
 
 class TransactionData(BaseModel):

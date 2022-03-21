@@ -11,6 +11,7 @@ def create_transaction(transdata: TransactionData) -> TransactionResponse:
         row_id = cur.fetchone()[0]
         cur.executemany("SELECT Amount FROM Account WHERE Id = ?", [(transdata.A1,), (transdata.A2,)])
         data = cur.fetchall()
+        conn.commit()
         return TransactionResponse(Id=row_id, Bal1=data[0][0], Bal2=data[1][0])
     except Exception as e:
         raise e

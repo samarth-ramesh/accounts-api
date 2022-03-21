@@ -16,6 +16,7 @@ def create_account(account_data: AccountData) -> AccountCreateResponse:
         cur = conn.cursor()
         cur.execute("INSERT INTO Account (Name) VALUES (?) RETURNING Id, Amount, Name", (account_data.Name,))
         data = cur.fetchone()
+        conn.commit()
         return AccountCreateResponse(Id=data[0], Amount=data[1], Name=data[2])
     except sqlite3.Error:
         raise HTTPException(status_code=500, detail="DB_ERROR")

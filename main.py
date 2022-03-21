@@ -1,10 +1,10 @@
-from fastapi import FastAPI
-from fastapi.security import OAuth2AuthorizationCodeBearer
+from fastapi import FastAPI, Depends
+from fastapi.security import OAuth2PasswordRequestForm
 
 import accounts
 import auth
 import transactions
-from models import LoginData, LoginResponse, TransactionData, TransactionResponse, AccountData, Error, \
+from models import LoginResponse, TransactionData, TransactionResponse, AccountData, Error, \
     AccountCreateResponse, AccountList, AccountListResponse
 
 app = FastAPI()
@@ -13,7 +13,7 @@ responses = {401: {"model": Error}, 404: {"model": Error}}
 
 
 @app.post(path="/login", response_model=LoginResponse, responses=responses)
-def login(body: LoginData):
+def login(body: OAuth2PasswordRequestForm = Depends()):
     return auth.login(body)
 
 
