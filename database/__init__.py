@@ -34,5 +34,8 @@ def init_db(dbname: str):
 __db_conn = init_db("db.db")
 __db_name = "db.db"
 
+
 def get_db():
-    return sqlite3.connect(__db_name)
+    db = sqlite3.connect(__db_name)
+    db.row_factory = sqlite3.Row
+    return db
