@@ -1,3 +1,4 @@
+import hashlib
 import sqlite3
 
 schema = """
@@ -9,8 +10,9 @@ CREATE TABLE Transactions(
     Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     Amount NUMERIC NOT NULL,
     Remarks TEXT NOT NULL ,
-    A1 INTEGER ,
-    A2 INTEGER ,
+    TransactionTime INTEGER NOT NULL,
+    A1 INTEGER NOT NULL ,
+    A2 INTEGER NOT NULL,
     FOREIGN KEY(A1) REFERENCES Account(Id),
     FOREIGN KEY(A2) REFERENCES Account(Id)
 );
@@ -29,6 +31,7 @@ def init_db():
     data = cur.fetchall()
     if len(data) == 0:
         cur.executescript(schema)
+        cur.execute("INSERT INTO Auth (Name, Passwd) VALUES ('srini',?)", (hashlib.blake2b(b"foo").digest(),))
         db.commit()
 
 
