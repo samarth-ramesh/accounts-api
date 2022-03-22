@@ -13,8 +13,9 @@ def create_transaction(transdata: TransactionData) -> TransactionResponse:
         cur = conn.cursor()
         current_time = datetime.datetime.utcnow().timestamp()
         cur.execute(
-            "INSERT INTO Transactions (Amount, Remarks, A1, A2, TransactionTime) VALUES (? ,? ,?, ?, ?) RETURNING Id",
+            "INSERT INTO Transactions (Amount, Remarks, A1, A2, TransactionTime) VALUES (? ,? ,?, ?, ?)",
             (transdata.Amount, transdata.Remarks, transdata.A1, transdata.A2, current_time))
+        cur.execute("SELECT Id FROM Transactions ORDER BY Id DESC LIMIT 1")
         row_id = cur.fetchone()[0]
         cur.executemany("UPDATE Account SET Amount=Amount+? WHERE Id=?",
                         [(-transdata.Amount, transdata.A1), (transdata.Amount, transdata.A2)])

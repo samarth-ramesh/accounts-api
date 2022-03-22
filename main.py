@@ -7,7 +7,12 @@ import transactions
 from models import LoginResponse, TransactionData, TransactionResponse, AccountData, Error, \
     AccountCreateResponse, AccountList, AccountListResponse, TransactionList, TransactionListResponse
 
-app = FastAPI()
+app = FastAPI(
+    servers=[
+        {'url': 'https://ac.samarth.gq', 'description': 'Prod'},
+        {'url': 'http://127.0.0.1:8000', 'description': 'Dev'}
+    ]
+)
 
 responses = {401: {"model": Error}, 404: {"model": Error}}
 

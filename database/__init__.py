@@ -35,7 +35,7 @@ def init_db():
         db.commit()
 
 
-__db_name = "db.db"
+__db_name = "./db/db.db"
 
 
 def get_db():
