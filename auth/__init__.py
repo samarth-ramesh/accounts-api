@@ -19,7 +19,7 @@ def create_token() -> str:
     return b.hex()
 
 
-__tokens = {"foo"}
+__tokens = set()
 
 
 def login(body: OAuth2PasswordRequestForm) -> LoginResponse:
@@ -32,7 +32,7 @@ def login(body: OAuth2PasswordRequestForm) -> LoginResponse:
             # stuff got fetched
             if hash_pass(body.password) == data[1]:
                 # auth success
-                token = "foo" # create_token()
+                token = create_token()
                 __tokens.add(token)
                 return LoginResponse(access_token=token)
             else:
