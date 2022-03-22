@@ -44,7 +44,6 @@ def login(body: OAuth2PasswordRequestForm) -> LoginResponse:
 
 
 def validate_login(header: str) -> bool:
-    print(header)
     # format is Bearer <token>
     if header is None:
         return False

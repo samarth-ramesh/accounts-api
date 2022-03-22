@@ -5,7 +5,7 @@ import accounts
 import auth
 import transactions
 from models import LoginResponse, TransactionData, TransactionResponse, AccountData, Error, \
-    AccountCreateResponse, AccountList, AccountListResponse
+    AccountCreateResponse, AccountList, AccountListResponse, TransactionList, TransactionListResponse
 
 app = FastAPI()
 
@@ -17,10 +17,16 @@ def login(body: OAuth2PasswordRequestForm = Depends()):
     return auth.login(body)
 
 
-@app.post(path="/transaction", response_model=TransactionResponse, responses=responses)
+@app.post(path="/transactions/create", response_model=TransactionResponse, responses=responses)
 @auth.secure_endpoint(TransactionData)
 def transaction(transaction_data: TransactionData):
     return transactions.create_transaction(transaction_data)
+
+
+@app.post(path="/transactions/list", response_model=TransactionListResponse, responses=responses)
+@auth.secure_endpoint(TransactionList)
+def search_transaction(params: TransactionList) -> TransactionListResponse:
+    return transactions.get_transactions(params)
 
 
 @app.post(path="/accounts/create", response_model=AccountCreateResponse, responses=responses)
@@ -33,3 +39,4 @@ def create_account(account_data: AccountData):
 @auth.secure_endpoint(AccountList)
 def get_accounts(account_data: AccountList):
     return accounts.get_accounts(account_data)
+

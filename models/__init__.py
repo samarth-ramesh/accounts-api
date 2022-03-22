@@ -46,3 +46,26 @@ class AccountListItem(AccountList):
 
 class AccountListResponse(BaseModel):
     Accounts: typing.List[AccountListItem]
+
+
+class TransactionList(BaseModel):
+    Remarks: str | None
+    StartTime: int | None
+    EndTime: int | None
+    MinAmount: float | None
+    MaxAmount: float | None
+    Account1: int | None
+    Account2: int | None
+
+
+class TransactionListItem(BaseModel):
+    Amount: float
+    Remarks: str
+    Account1: str
+    Account2: str
+    TransactionTime: int
+    Id: int
+
+
+class TransactionListResponse(BaseModel):
+    Transactions: typing.List[TransactionListItem]
