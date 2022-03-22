@@ -28,9 +28,9 @@ def create_account(account_data: AccountData) -> AccountCreateResponse:
 
 
 def get_accounts(account_data: AccountList) -> AccountListResponse:
-    def process_accounts(data):
+    def process_accounts(accounts: list[sqlite3.Row]):
         return AccountListResponse(
-            Accounts=[AccountListItem(Id=i["Id"], Name=i["Name"], Amount=i["Amount"]) for i in data])
+            Accounts=[AccountListItem(Id=i["Id"], Name=i["Name"], Amount=i["Amount"]) for i in accounts])
 
     try:
         conn = get_db()
