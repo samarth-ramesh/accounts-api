@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 
 import accounts
@@ -13,6 +14,9 @@ app = FastAPI(
         {'url': 'http://127.0.0.1:8000', 'description': 'Dev'}
     ]
 )
+
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"],
+                   allow_headers=["*"])
 
 responses = {401: {"model": Error}, 404: {"model": Error}}
 
@@ -44,4 +48,3 @@ def create_account(account_data: AccountData):
 @auth.secure_endpoint(AccountList)
 def get_accounts(account_data: AccountList):
     return accounts.get_accounts(account_data)
-
