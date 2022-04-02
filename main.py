@@ -23,6 +23,7 @@ responses = {401: {"model": Error}, 404: {"model": Error}}
 
 @app.post(path="/login", response_model=LoginResponse, responses=responses)
 def login(body: OAuth2PasswordRequestForm = Depends()):
+    print(body)
     return auth.login(body)
 
 
