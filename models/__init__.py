@@ -69,3 +69,12 @@ class TransactionListItem(BaseModel):
 
 class TransactionListResponse(BaseModel):
     Transactions: typing.List[TransactionListItem]
+
+
+class TransactionDelete(BaseModel):
+    Id : int
+
+
+class TransactionDeleteResponse(BaseModel):
+    Status: bool
+    

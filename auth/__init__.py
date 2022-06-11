@@ -23,6 +23,7 @@ __tokens = set()
 
 
 def login(body: OAuth2PasswordRequestForm) -> LoginResponse:
+    print(body.username, body.password)
     try:
         conn = get_db()
         cur = conn.cursor()

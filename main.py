@@ -1,3 +1,4 @@
+from urllib import response
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
@@ -5,7 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 import accounts
 import auth
 import transactions
-from models import LoginResponse, TransactionData, TransactionResponse, AccountData, Error, \
+from models import LoginResponse, TransactionData, TransactionDelete, TransactionDeleteResponse, TransactionResponse, AccountData, Error, \
     AccountCreateResponse, AccountList, AccountListResponse, TransactionList, TransactionListResponse
 
 app = FastAPI(
@@ -49,3 +50,9 @@ def create_account(account_data: AccountData):
 @auth.secure_endpoint(AccountList)
 def get_accounts(account_data: AccountList):
     return accounts.get_accounts(account_data)
+
+@app.post(path="/transactions/delete", responses=responses, response_model=TransactionDeleteResponse)
+@auth.secure_endpoint(TransactionDelete)
+def delete_account(details: TransactionDelete):
+    transdetails = transactions.delete_transaction(details.Id)
+    return TransactionDeleteResponse(Status=transdetails);

@@ -39,20 +39,15 @@ def get_transactions(params: TransactionList) -> TransactionListResponse:
         A1.Name AS AcFrom, A2.Name AS AcTo
         FROM Transactions as T
             JOIN Account A1 on A1.Id = T.A1
-            JOIN Account A2 on A2.Id = T.A2  """
+            JOIN Account A2 on A2.Id = T.A2 
+        WHERE T.IsDeleted = FALSE """
     query_params = []
 
     def start_guard():
-        nonlocal query
-        if not len(query_params):
-            query += "WHERE "
-        else:
             query += " AND "
 
     if params.Remarks:
-        if not len(query_params):
-            query += "WHERE "
-        query += "Remarks LIKE ?"
+        query += "AND Remarks LIKE ?"
         query_params.append("%" + params.Remarks + "%")
 
     if params.StartTime:
@@ -103,4 +98,24 @@ def get_transactions(params: TransactionList) -> TransactionListResponse:
             ))
         return TransactionListResponse(Transactions=rv)
     except Exception as e:
-        raise e
+        return HTTPException(status_code=500, )
+
+
+def delete_transaction(transaction_id: int) -> bool:
+    conn: sqlite3.Connection = get_db()
+    cur: sqlite3.Cursor = conn.cursor()
+    try:
+        cur.execute("SELECT Amount, A1, A2 FROM Transactions WHERE Id = ?", (transaction_id,))
+        data = cur.fetchone()
+        amount = data[0]
+        acc1 = data[1]
+        acc2 = data[2]
+        cur.execute("UPDATE Account SET Amount = Amount + ? WHERE Id = ?", (amount, acc1))
+        cur.execute("UPDATE Account SET Amount = Amount - ? WHERE Id = ?", (amount, acc2))
+        cur.execute("UPDATE Transactions SET IsDeleted = TRUE WHERE Id = ?", (transaction_id,))
+        conn.commit()
+        return True
+    except sqlite3.Error as ex:
+        raise HTTPException(status_code=500, detail="DB_ERROR") from ex
+    except Exception as exception:
+        raise exception

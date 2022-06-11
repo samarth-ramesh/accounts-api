@@ -13,6 +13,7 @@ CREATE TABLE Transactions(
     TransactionTime INTEGER NOT NULL,
     A1 INTEGER NOT NULL ,
     A2 INTEGER NOT NULL,
+    IsDeleted BOOL DEFAULT FALSE,
     FOREIGN KEY(A1) REFERENCES Account(Id),
     FOREIGN KEY(A2) REFERENCES Account(Id)
 );
