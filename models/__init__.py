@@ -78,3 +78,10 @@ class TransactionDelete(BaseModel):
 class TransactionDeleteResponse(BaseModel):
     Status: bool
     
+
+class TransactionEditData(BaseModel):
+    Id: int
+    A1: typing.Optional[int]
+    A2: typing.Optional[int]
+    Amount: typing.Optional[float]
+    Remarks: typing.Optional[str]

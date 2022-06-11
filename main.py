@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 import accounts
 import auth
 import transactions
-from models import LoginResponse, TransactionData, TransactionDelete, TransactionDeleteResponse, TransactionResponse, AccountData, Error, \
+from models import LoginResponse, TransactionData, TransactionDelete, TransactionDeleteResponse, TransactionEditData, TransactionListItem, TransactionResponse, AccountData, Error, \
     AccountCreateResponse, AccountList, AccountListResponse, TransactionList, TransactionListResponse
 
 app = FastAPI(
@@ -56,3 +56,8 @@ def get_accounts(account_data: AccountList):
 def delete_account(details: TransactionDelete):
     transdetails = transactions.delete_transaction(details.Id)
     return TransactionDeleteResponse(Status=transdetails);
+
+@app.patch(path="/transactions/edit", response_model=TransactionListItem, responses=responses)
+# @auth.secure_endpoint(TransactionEditData)
+def edit_transaction(transaction_data: TransactionEditData):
+    return transactions.edit_transaction(transaction_data)
