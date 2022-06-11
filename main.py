@@ -58,6 +58,6 @@ def delete_account(details: TransactionDelete):
     return TransactionDeleteResponse(Status=transdetails);
 
 @app.patch(path="/transactions/edit", response_model=TransactionListItem, responses=responses)
-# @auth.secure_endpoint(TransactionEditData)
+@auth.secure_endpoint(TransactionEditData)
 def edit_transaction(transaction_data: TransactionEditData):
     return transactions.edit_transaction(transaction_data)
