@@ -1,2 +1,8 @@
 /db/db.db
 /auth/db.db
+__pycache__/main.cpython-310.pyc
+accounts/__pycache__/__init__.cpython-310.pyc
+auth/__pycache__/__init__.cpython-310.pyc
+database/__pycache__/__init__.cpython-310.pyc
+models/__pycache__/__init__.cpython-310.pyc
+transactions/__pycache__/__init__.cpython-310.pyc
