@@ -14,7 +14,7 @@ def create_transaction(transdata: TransactionData) -> TransactionResponse:
         cur = conn.cursor()
         current_time = datetime.datetime.utcnow().timestamp()
         cur.execute(
-            "INSERT INTO Transactions (Amount, Remarks, A1, A2, TransactionTime) VALUES (? ,? ,?, ?, ?)",
+            "INSERT INTO Transactions (Amount, Remarks, A1, A2, TransactionTime, IsDeleted) VALUES (? ,? ,?, ?, ?, FALSE)",
             (transdata.Amount, transdata.Remarks, transdata.A1, transdata.A2, current_time))
         cur.execute("SELECT Id FROM Transactions ORDER BY Id DESC LIMIT 1")
         row_id = cur.fetchone()[0]
@@ -43,7 +43,7 @@ def get_transactions(params: TransactionList) -> TransactionListResponse:
         FROM Transactions as T
             JOIN Account A1 on A1.Id = T.A1
             JOIN Account A2 on A2.Id = T.A2 
-        WHERE T.IsDeleted = FALSE """
+        WHERE T.IsDeleted != TRUE """
     query_params = []
 
     def start_guard():
